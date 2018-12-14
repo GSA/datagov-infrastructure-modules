@@ -51,7 +51,6 @@ variable "solr_lc_instance_type" {
   default = "t2.micro"
 }
 
-
 ### Auto-Scaling Groups ###
 
 ## web ##
@@ -91,4 +90,14 @@ variable "asg_solr_max_size" {
 
 variable "asg_solr_desired_capacity" {
   default = "1"
+}
+
+## dashboard-web ##
+variable "dashboard_web_instance_type" {
+  default = "t2.micro"
+}
+
+variable "dashboard_web_instance_count" {
+  description = "Number of instances of dashboard-web to create"
+  default     = "1"
 }
