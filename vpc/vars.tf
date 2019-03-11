@@ -12,5 +12,5 @@ variable "vpc_name" {
 }
 
 variable "env" {
-  default = "dev"
+  description = "Short, unique identifier for this environment."
 }

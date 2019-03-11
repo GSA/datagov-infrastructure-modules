@@ -6,6 +6,10 @@ output "azs" {
   value = "${module.vpc.azs}"
 }
 
+output "env" {
+  value = "${var.env}"
+}
+
 output "private_subnets" {
   value = "${module.vpc.private_subnets}"
 }
