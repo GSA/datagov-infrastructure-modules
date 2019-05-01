@@ -80,6 +80,20 @@ resource "aws_security_group" "solr_access" {
   name        = "solr-access-${var.env}-tf"
   description = "Provides access to solr"
   vpc_id      = "${data.terraform_remote_state.vpc.vpc_id}"
+
+  egress {
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 8983
+    to_port     = 8983
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
 
 module "solr" {
