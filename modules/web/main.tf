@@ -1,6 +1,7 @@
 data "aws_route53_zone" "private" {
   name         = "${var.dns_zone_private}"
   private_zone = true
+  vpc_id       = "${var.vpc_id}"
 }
 
 resource "aws_security_group" "web" {

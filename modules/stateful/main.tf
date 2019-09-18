@@ -1,6 +1,7 @@
 data "aws_route53_zone" "default" {
   name         = "${var.dns_zone}"
   private_zone = true
+  vpc_id       = "${var.vpc_id}"
 }
 
 resource "aws_ebs_volume" "default" {
