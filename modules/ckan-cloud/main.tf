@@ -1,3 +1,43 @@
+data "aws_ami" "cco_ami" {
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = ["ckan-cloud-operator-*"]
+  }
+
+  owners = ["561987031915"]  # datopian
+}
+
+resource "aws_security_group" "ssh" {
+  name        = "${var.env}-cco-mgmt"
+  description = "${var.env} CCO management server"
+  vpc_id      = "${module.vpc.vpc_id}"
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # TODO all the hosts should be able to talk to ubuntu 80/443 for updates. Not
+  # sure where that security group should live. Maybe in VPC as a default sg?
+  egress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 module "vpc" {
   source = "../vpc"
 
@@ -5,6 +45,18 @@ module "vpc" {
   env                = "${var.env}"
   single_nat_gateway = true
   vpc_name           = "ckan-cloud-${var.env}"
+}
+
+module "management" {
+  source = "../stateless"
+
+  ami_id = "${data.aws_ami.cco_ami.id}"
+  vpc_id = "${module.vpc.vpc_id}"
+  ansible_group = "cco"
+  dns_zone = "ckan-cloud-dev.datagov.us"
+  env = "${var.env}"
+  key_name = "${var.key_name}"
+  subnets = ["${module.vpc.public_subnets}"]
 }
 
 resource "aws_iam_user" "management" {
