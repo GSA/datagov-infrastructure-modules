@@ -1,3 +1,5 @@
+_This repository is no longer maintained and has been merged into https://github.com/GSA/datagov-infrastructure-live._
+
 [![CircleCI](https://circleci.com/gh/GSA/datagov-infrastructure-modules.svg?style=svg)](https://circleci.com/gh/GSA/datagov-infrastructure-modules)
 
 # datagov-infrastructure-modules
